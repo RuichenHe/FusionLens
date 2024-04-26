@@ -6,9 +6,12 @@ from flask_cors import CORS # allows the frontend to get resources from localhos
 from io import BytesIO
 import base64
 from huggingface_hub import login
-
+from logging import FileHandler,WARNING
            
 app = Flask(__name__)
+file_handler = FileHandler('errorlog.txt')
+file_handler.setLevel(WARNING)
+
 CORS(app)  # Enable CORS for all routes
 
 def generate_image_using_model(prompt):
