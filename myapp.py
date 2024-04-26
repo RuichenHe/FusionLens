@@ -21,7 +21,7 @@ def generate_image_using_model(prompt):
     print("here\n")
     pipe = StableDiffusionPipeline.from_pretrained(model_id, safety_checker=None, torch_dtype=torch.float16)
     pipe = pipe.to(device)
-    
+    print("Got model\n")
     vae = pipe.vae
     images = []
     
@@ -31,7 +31,8 @@ def generate_image_using_model(prompt):
         image = (image / 2 + 0.5).clamp(0, 1)
         image = image.cpu().permute(1, 2, 0).numpy()
         images.extend(pipe.numpy_to_pil(image))
-
+        
+    print("Ready for pipeline\n")
     pipe(prompt, callback=latents_callback, callback_steps = 5)  
     return images
     
