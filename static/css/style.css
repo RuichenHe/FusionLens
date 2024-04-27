@@ -31,3 +31,18 @@
 #addRegionButton {
     margin-top: 5px;
 }
+
+.left-side {
+    flex: 2; /* Takes up 2 parts of the flex container */
+    padding: 10px;
+    overflow-y: auto; /* Adds scroll to the left side if content overflows */
+}
+
+.right-side {
+    flex: 1; /* Takes up 1 part of the flex container */
+    padding: 10px;
+    background-color: #f4f4f4; /* Gives a distinct background color */
+    display: flex;
+    justify-content: center; /* Centers content horizontally */
+    align-items: center; /* Centers content vertically */
+}
