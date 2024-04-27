@@ -11,13 +11,14 @@
     <div class="container">
         <textarea class="promptInput" placeholder="Enter your prompt here..."></textarea>
         <div class="imageGallery"></div>
+        <div class="tsnePlot"></div>
     </div>
     <script>
         document.getElementById('generateButton').addEventListener('click', function() {
             document.querySelectorAll('.container:not(.used)').forEach(function(container) {
                 const prompt = container.querySelector('.promptInput').value;
                 const imageGallery = container.querySelector('.imageGallery');
-
+                const tsnePlot = container.querySelector('.tsnePlot');  // Container for the t-SNE plot
                 // Mark the container as used
                 container.classList.add('used');
 
@@ -37,6 +38,13 @@
                         img.classList.add('image');
                         imageGallery.appendChild(img);
                     });
+                    tsnePlot.innerHTML = ''; // Clear the t-SNE plot container
+                    // Display t-SNE plot
+                    const tsneImage = document.createElement('img');
+                    tsneImage.src = data.tsne_plot;
+                    tsneImage.classList.add('tsne-image');
+                    tsnePlot.appendChild(tsneImage);
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -62,6 +70,10 @@
         const newImageGallery = document.createElement('div');
         newImageGallery.classList.add('imageGallery');
 
+        // Create a new t-SNE plot div
+        const newTsnePlot = document.createElement('div');
+        newTsnePlot.classList.add('tsnePlot');
+
         // Create a delete button
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
@@ -75,6 +87,7 @@
         // Append the textarea, image gallery, and delete button to the container
         newContainer.appendChild(newTextArea);
         newContainer.appendChild(newImageGallery);
+        newContainer.appendChild(newTsnePlot);
         newContainer.appendChild(deleteButton);
 
         // Append the new container to the body (or to a specific parent element)

@@ -57,6 +57,7 @@ def generate():
         image.save(img_io, 'PNG')
         img_io.seek(0)
         image_data.append('data:image/png;base64,' + base64.b64encode(img_io.getvalue()).decode('utf-8'))
+    print(latents)
     return jsonify({'images': image_data})
     
 
