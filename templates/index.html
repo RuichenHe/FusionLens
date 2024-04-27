@@ -50,6 +50,20 @@
                     console.error('Error:', error);
                 });
             });
+            fetch('/api/generate-tsne', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Successful");
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+
         });
     
     
