@@ -20,109 +20,120 @@
     </div>
     <script>
         document.getElementById('generateButton').addEventListener('click', function() {
-            document.querySelectorAll('.container:not(.used)').forEach(function(container) {
-                const prompt = container.querySelector('.promptInput').value;
-                const imageGallery = container.querySelector('.imageGallery');
-                const tsnePlot = container.querySelector('.tsnePlot');  // Container for the t-SNE plot
-                // Mark the container as used
-                container.classList.add('used');
+    // Gather all fetch promises for processing prompts
+    let fetchPromises = [];
 
-                fetch('/api/generate', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ prompt: prompt }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    imageGallery.innerHTML = ''; // Clear the gallery
-                    data.images.forEach(imageSrc => {
-                        const img = document.createElement('img');
-                        img.src = imageSrc;
-                        img.classList.add('image');
-                        imageGallery.appendChild(img);
-                    });
-                    tsnePlot.innerHTML = ''; // Clear the t-SNE plot container
-                    // Display t-SNE plot
-                    const tsneImage = document.createElement('img');
-                    tsneImage.src = data.tsne_plot;
-                    tsneImage.classList.add('tsne-image');
-                    tsnePlot.appendChild(tsneImage);
+    document.querySelectorAll('.container:not(.used)').forEach(function(container) {
+        const prompt = container.querySelector('.promptInput').value;
+        const imageGallery = container.querySelector('.imageGallery');
+        const tsnePlot = container.querySelector('.tsnePlot');  // Container for the t-SNE plot
 
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
+        // Mark the container as used
+        container.classList.add('used');
+
+        // Prepare the fetch promise
+        let fetchPromise = fetch('/api/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ prompt: prompt }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            imageGallery.innerHTML = ''; // Clear the gallery
+            data.images.forEach(imageSrc => {
+                const img = document.createElement('img');
+                img.src = imageSrc;
+                img.classList.add('image');
+                imageGallery.appendChild(img);
             });
-            fetch('/api/generate-tsne', {
-                method: 'GET'
-            })
-            .then(response => {
-                if (response.ok) {
-                    return response.blob();  // Assuming the response is an image, use blob() to handle it
-                } else {
-                    throw new Error('Network response was not ok.');
-                }
-            })
-            .then(blob => {
-                // Create a local URL for the blob object
-                const imageUrl = URL.createObjectURL(blob);
-                console.log("Successful, image URL:", imageUrl);
-
-                // Find the tsneVisualization div and display the image there
-                const tsneDiv = document.getElementById('tsneVisualization');
-                tsneDiv.innerHTML = '';  // Clear any previous content
-                const imgElement = document.createElement('img');
-                imgElement.src = imageUrl;
-                imgElement.style.maxWidth = '100%';  // Ensure the image fits within the div
-                tsneDiv.appendChild(imgElement);
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
+            tsnePlot.innerHTML = ''; // Clear the t-SNE plot container
+            // Display t-SNE plot if available
+            if(data.tsne_plot){
+                const tsneImage = document.createElement('img');
+                tsneImage.src = data.tsne_plot;
+                tsneImage.classList.add('tsne-image');
+                tsnePlot.appendChild(tsneImage);
+            }
         });
+
+        fetchPromises.push(fetchPromise);
+    });
+
+    // Wait for all fetches to complete
+    Promise.all(fetchPromises).then(() => {
+        // Now fetch the overall t-SNE
+        fetch('/api/generate-tsne', {
+            method: 'GET'
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.blob();  // Assuming the response is an image, use blob() to handle it
+            } else {
+                throw new Error('Network response was not ok.');
+            }
+        })
+        .then(blob => {
+            // Create a local URL for the blob object
+            const imageUrl = URL.createObjectURL(blob);
+            console.log("Successful, image URL:", imageUrl);
+
+            // Find the tsneVisualization div and display the image there
+            const tsneDiv = document.getElementById('tsneVisualization');
+            tsneDiv.innerHTML = '';  // Clear any previous content
+            const imgElement = document.createElement('img');
+            imgElement.src = imageUrl;
+            imgElement.style.maxWidth = '100%';  // Ensure the image fits within the div
+            tsneDiv.appendChild(imgElement);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+});
     
-        document.getElementById('addRegionButton').addEventListener('click', function() {
-            // Create a new container div
-            const newContainer = document.createElement('div');
-            newContainer.classList.add('container');
+    
+    document.getElementById('addRegionButton').addEventListener('click', function() {
+        // Create a new container div
+        const newContainer = document.createElement('div');
+        newContainer.classList.add('container');
 
-            // Assign a unique ID to the container (optional, if you want to target it specifically later)
-            newContainer.id = 'container-' + document.querySelectorAll('.container').length;
+        // Assign a unique ID to the container (optional, if you want to target it specifically later)
+        newContainer.id = 'container-' + document.querySelectorAll('.container').length;
 
-            // Create a new textarea
-            const newTextArea = document.createElement('textarea');
-            newTextArea.classList.add('promptInput');
-            newTextArea.placeholder = 'Enter your prompt here...';
+        // Create a new textarea
+        const newTextArea = document.createElement('textarea');
+        newTextArea.classList.add('promptInput');
+        newTextArea.placeholder = 'Enter your prompt here...';
 
-            // Create a new image gallery div
-            const newImageGallery = document.createElement('div');
-            newImageGallery.classList.add('imageGallery');
+        // Create a new image gallery div
+        const newImageGallery = document.createElement('div');
+        newImageGallery.classList.add('imageGallery');
 
-            // Create a new t-SNE plot div
-            const newTsnePlot = document.createElement('div');
-            newTsnePlot.classList.add('tsnePlot');
+        // Create a new t-SNE plot div
+        const newTsnePlot = document.createElement('div');
+        newTsnePlot.classList.add('tsnePlot');
 
-            // Create a delete button
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Delete';
-            deleteButton.classList.add('deleteButton');
+        // Create a delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.classList.add('deleteButton');
 
-            // Add event listener to the delete button
-            deleteButton.addEventListener('click', function() {
-                newContainer.remove();
-            });
-
-            // Append the textarea, image gallery, and delete button to the container
-            newContainer.appendChild(newTextArea);
-            newContainer.appendChild(newImageGallery);
-            newContainer.appendChild(newTsnePlot);
-            newContainer.appendChild(deleteButton);
-
-            // Append the new container to the body (or to a specific parent element)
-            document.body.appendChild(newContainer);
+        // Add event listener to the delete button
+        deleteButton.addEventListener('click', function() {
+            newContainer.remove();
         });
+
+        // Append the textarea, image gallery, and delete button to the container
+        newContainer.appendChild(newTextArea);
+        newContainer.appendChild(newImageGallery);
+        newContainer.appendChild(newTsnePlot);
+        newContainer.appendChild(deleteButton);
+
+        // Append the new container to the body (or to a specific parent element)
+        document.body.appendChild(newContainer);
+    });
     
     </script>
 </body>
