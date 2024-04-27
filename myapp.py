@@ -27,24 +27,30 @@ def generate_image_using_model(prompt):
     print("Got model\n")
     vae = pipe.vae
     images = []
+    latent_list = []
+    image_step = 5  # Interval to save images
     
     def latents_callback(i, t, latents):
-        latents = 1 / 0.18215 * latents
-        image = vae.decode(latents).sample[0]
-        image = (image / 2 + 0.5).clamp(0, 1)
-        image = image.cpu().permute(1, 2, 0).numpy()
-        images.extend(pipe.numpy_to_pil(image))
+        scaled_latents = 1 / 0.18215 * latents
+        latent_list.append(scaled_latents.cpu().detach().numpy())
+
+        if i % image_step == 0:
+            image = pipe.vae.decode(scaled_latents).sample[0]
+            image = (image / 2 + 0.5).clamp(0, 1)
+            image = image.cpu().permute(1, 2, 0).numpy()
+            pil_image = pipe.numpy_to_pil(image)
+            images.append(pil_image)
         
     print("Ready for pipeline\n")
-    pipe(prompt, callback=latents_callback, callback_steps = 5)  
-    return images
+    pipe(prompt, callback=latents_callback, callback_steps=1)
+    return images, latent_list
     
 @app.route('/api/generate', methods=['POST'])
 def generate():
     data = request.get_json()
     print(data)
     prompt = data['prompt']
-    images = generate_image_using_model(prompt)
+    images, latents = generate_image_using_model(prompt)
     image_data = []
     for image in images:
         img_io = BytesIO()
