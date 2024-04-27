@@ -17,6 +17,8 @@
             document.querySelectorAll('.container:not(.used)').forEach(function(container) {
                 const prompt = container.querySelector('.promptInput').value;
                 const imageGallery = container.querySelector('.imageGallery');
+                const tsnePlot = container.querySelector('.tsnePlot');  // Container for the t-SNE plot
+
 
                 // Mark the container as used
                 container.classList.add('used');
@@ -31,12 +33,19 @@
                 .then(response => response.json())
                 .then(data => {
                     imageGallery.innerHTML = ''; // Clear the gallery
+                    tsnePlot.innerHTML = ''; // Clear the t-SNE plot container
                     data.images.forEach(imageSrc => {
                         const img = document.createElement('img');
                         img.src = imageSrc;
                         img.classList.add('image');
                         imageGallery.appendChild(img);
                     });
+                    // Display t-SNE plot
+                    const tsneImage = document.createElement('img');
+                    tsneImage.src = data.tsne_plot;
+                    tsneImage.classList.add('tsne-image');
+                    tsnePlot.appendChild(tsneImage);
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -62,6 +71,13 @@
         const newImageGallery = document.createElement('div');
         newImageGallery.classList.add('imageGallery');
 
+
+        // Create a new t-SNE plot div
+        const newTsnePlot = document.createElement('div');
+        newTsnePlot.classList.add('tsnePlot');
+        newTsnePlot.style.width = '100%'; // Optional: Set width to full container width
+        newTsnePlot.style.textAlign = 'center'; // Optional: Center-align the content
+
         // Create a delete button
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
@@ -75,6 +91,7 @@
         // Append the textarea, image gallery, and delete button to the container
         newContainer.appendChild(newTextArea);
         newContainer.appendChild(newImageGallery);
+        newContainer.appendChild(newTsnePlot);
         newContainer.appendChild(deleteButton);
 
         // Append the new container to the body (or to a specific parent element)

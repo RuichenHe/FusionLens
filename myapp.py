@@ -7,7 +7,9 @@ from io import BytesIO
 import base64
 from huggingface_hub import login
 from logging import FileHandler,WARNING
-           
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
+import numpy as np
 app = Flask(__name__)
 file_handler = FileHandler('errorlog.txt')
 file_handler.setLevel(WARNING)
@@ -45,19 +47,40 @@ def generate_image_using_model(prompt):
     pipe(prompt, callback=latents_callback, callback_steps=1)
     return images, latent_list
     
-@app.route('/api/generate', methods=['POST'])
 def generate():
     data = request.get_json()
     print(data)
     prompt = data['prompt']
     images, latents = generate_image_using_model(prompt)
+    
+    # Process images for return
     image_data = []
     for image in images:
         img_io = BytesIO()
         image.save(img_io, 'PNG')
         img_io.seek(0)
         image_data.append('data:image/png;base64,' + base64.b64encode(img_io.getvalue()).decode('utf-8'))
-    return jsonify({'images': image_data})
+
+    # Perform t-SNE on the collected latents
+    latents_array = np.array(latents)
+    tsne = TSNE(n_components=2, random_state=42)
+    tsne_results = tsne.fit_transform(latents_array.reshape(latents_array.shape[0], -1))
+    
+    # Create a scatter plot of the t-SNE results
+    plt.figure(figsize=(8, 6))
+    plt.scatter(tsne_results[:, 0], tsne_results[:, 1], c=np.linspace(0, 1, tsne_results.shape[0]), cmap='viridis')
+    plt.colorbar(label='Step in generation process')
+    plt.title('t-SNE of Latents')
+
+    # Save the plot to a BytesIO object in PNG format
+    img_io = BytesIO()
+    plt.savefig(img_io, format='png')
+    img_io.seek(0)
+    tsne_image_base64 = 'data:image/png;base64,' + base64.b64encode(img_io.getvalue()).decode('utf-8')
+    
+    # Return both the images and the t-SNE plot
+    return jsonify({'images': image_data, 'tsne_plot': tsne_image_base64})
+
     
 
 @app.route('/hello')
