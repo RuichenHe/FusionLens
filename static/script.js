@@ -27,14 +27,14 @@ document.getElementById('generateButton').addEventListener('click', function() {
                 img.classList.add('image');
                 imageGallery.appendChild(img);
             });
-            tsnePlot.innerHTML = ''; // Clear the t-SNE plot container
-            // Display t-SNE plot if available
-            if(data.tsne_plot){
-                const tsneImage = document.createElement('img');
-                tsneImage.src = data.tsne_plot;
-                tsneImage.classList.add('tsne-image');
-                tsnePlot.appendChild(tsneImage);
-            }
+            // tsnePlot.innerHTML = ''; // Clear the t-SNE plot container
+            // // Display t-SNE plot if available
+            // if(data.tsne_plot){
+            //     const tsneImage = document.createElement('img');
+            //     tsneImage.src = data.tsne_plot;
+            //     tsneImage.classList.add('tsne-image');
+            //     tsnePlot.appendChild(tsneImage);
+            // }
         });
 
         fetchPromises.push(fetchPromise);
@@ -177,7 +177,7 @@ document.getElementById('generateButton').addEventListener('click', function() {
         // Append the textarea, image gallery, and delete button to the container
         newContainer.appendChild(newTextArea);
         newContainer.appendChild(newImageGallery);
-        newContainer.appendChild(newTsnePlot);
+        // newContainer.appendChild(newTsnePlot);
         newContainer.appendChild(deleteButton);
 
         const leftSideDiv = document.querySelector('.left-side');
