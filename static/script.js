@@ -5,7 +5,6 @@ document.getElementById('generateButton').addEventListener('click', function() {
     document.querySelectorAll('.container:not(.used)').forEach(function(container) {
         const prompt = container.querySelector('.promptInput').value;
         const imageGallery = container.querySelector('.imageGallery');
-        const tsnePlot = container.querySelector('.tsnePlot');  // Container for the t-SNE plot
 
         // Mark the container as used
         container.classList.add('used');
