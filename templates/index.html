@@ -63,8 +63,7 @@
 
     // Wait for all fetches to complete
     Promise.all(fetchPromises).then(() => {
-        // Now fetch the overall t-SNE
-        fetch('/api/generate-tsne', {
+        fetch('/api/generate-umap', {
             method: 'GET'
         })
         .then(response => {
@@ -131,8 +130,12 @@
         newContainer.appendChild(newTsnePlot);
         newContainer.appendChild(deleteButton);
 
-        // Append the new container to the body (or to a specific parent element)
-        document.body.appendChild(newContainer);
+        const leftSideDiv = document.querySelector('.left-side');
+        if (leftSideDiv) {
+            leftSideDiv.appendChild(newContainer);
+        } else {
+            console.error('Left-side division not found!');
+        }
     });
     
     </script>

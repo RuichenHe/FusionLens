@@ -1,3 +1,11 @@
+body {
+    display: flex;  /* Establishes a flex container */
+    flex-direction: row;  /* Aligns children (content) horizontally */
+    margin: 0;
+    padding: 0;
+    height: 100vh; /* Full height of the viewport */
+    font-family: Arial, sans-serif; /* Optional: sets the font for the whole page */
+}
 .container {
     display: flex;
     flex-direction: row;
@@ -33,15 +41,19 @@
 }
 
 .left-side {
-    flex: 2; /* Takes up 2 parts of the flex container */
+    display: flex;  /* Makes left-side a flex container as well */
+    flex-direction: column;  /* Aligns children (content) vertically */
+    flex: 2;  /* Takes up 2 parts of the available space */
     padding: 10px;
-    overflow-y: auto; /* Adds scroll to the left side if content overflows */
+    overflow-y: auto; /* Adds vertical scrolling if content overflows */
+    height: 100%; /* Ensures it fills the container vertically */
 }
 
 .right-side {
-    flex: 1; /* Takes up 1 part of the flex container */
+    flex: 1;  /* Takes up 1 part of the available space */
     padding: 10px;
-    background-color: #f4f4f4; /* Gives a distinct background color */
+    background-color: #f4f4f4; /* Light gray background for visual distinction */
+    height: 100%; /* Ensures it fills the container vertically */
     display: flex;
     justify-content: center; /* Centers content horizontally */
     align-items: center; /* Centers content vertically */
