@@ -14,51 +14,69 @@
     </div>
     <script>
         document.getElementById('generateButton').addEventListener('click', function() {
-        document.querySelectorAll('.container').forEach(function(container) {
-            const prompt = container.querySelector('.promptInput').value;
-            const imageGallery = container.querySelector('.imageGallery');
-            fetch('/api/generate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ prompt: prompt }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                imageGallery.innerHTML = ''; // Clear the gallery
-                data.images.forEach(imageSrc => {
-                    const img = document.createElement('img');
-                    img.src = imageSrc;
-                    img.classList.add('image');
-                    imageGallery.appendChild(img);
+            document.querySelectorAll('.container:not(.used)').forEach(function(container) {
+                const prompt = container.querySelector('.promptInput').value;
+                const imageGallery = container.querySelector('.imageGallery');
+
+                // Mark the container as used
+                container.classList.add('used');
+
+                fetch('/api/generate', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ prompt: prompt }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    imageGallery.innerHTML = ''; // Clear the gallery
+                    data.images.forEach(imageSrc => {
+                        const img = document.createElement('img');
+                        img.src = imageSrc;
+                        img.classList.add('image');
+                        imageGallery.appendChild(img);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                 });
-            })
-            .catch(error => {
-                console.error('Error:', error);
             });
         });
-    });
     
     
     document.getElementById('addRegionButton').addEventListener('click', function() {
         // Create a new container div
         const newContainer = document.createElement('div');
         newContainer.classList.add('container');
-    
+
+        // Assign a unique ID to the container (optional, if you want to target it specifically later)
+        newContainer.id = 'container-' + document.querySelectorAll('.container').length;
+
         // Create a new textarea
         const newTextArea = document.createElement('textarea');
         newTextArea.classList.add('promptInput');
         newTextArea.placeholder = 'Enter your prompt here...';
-    
+
         // Create a new image gallery div
         const newImageGallery = document.createElement('div');
         newImageGallery.classList.add('imageGallery');
-    
-        // Append the textarea and image gallery to the container
+
+        // Create a delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.classList.add('deleteButton');
+
+        // Add event listener to the delete button
+        deleteButton.addEventListener('click', function() {
+            newContainer.remove();
+        });
+
+        // Append the textarea, image gallery, and delete button to the container
         newContainer.appendChild(newTextArea);
         newContainer.appendChild(newImageGallery);
-    
+        newContainer.appendChild(deleteButton);
+
         // Append the new container to the body (or to a specific parent element)
         document.body.appendChild(newContainer);
     });
