@@ -26,6 +26,7 @@ document.getElementById('generateButton').addEventListener('click', function() {
                 img.classList.add('image');
                 imageGallery.appendChild(img);
             });
+            container.setAttribute('data-prompt-id', data.prompt_id);
             // tsnePlot.innerHTML = ''; // Clear the t-SNE plot container
             // // Display t-SNE plot if available
             // if(data.tsne_plot){
@@ -170,7 +171,21 @@ document.getElementById('generateButton').addEventListener('click', function() {
 
         // Add event listener to the delete button
         deleteButton.addEventListener('click', function() {
-            newContainer.remove();
+            const promptId = newContainer.getAttribute('data-prompt-id');
+            fetch(`/api/delete-prompt/${promptId}`, {
+                method: 'POST',
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    newContainer.remove(); // Remove the container if the backend deletion was successful
+                    console.log(data.message);
+                    
+                } else {
+                    console.error('Failed to delete prompt:', data.message);
+                }
+            })
+            .catch(error => console.error('Error deleting prompt:', error));
         });
 
         // Append the textarea, image gallery, and delete button to the container
