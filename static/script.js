@@ -180,12 +180,21 @@ document.getElementById('generateButton').addEventListener('click', function() {
                 if (data.status === 'success') {
                     newContainer.remove(); // Remove the container if the backend deletion was successful
                     console.log(data.message);
-                    
+                    // After successfully deleting, fetch UMAP data to update visualization
+                    return fetch('/api/get-umap'); // Return this fetch promise for chaining
                 } else {
                     console.error('Failed to delete prompt:', data.message);
+                    throw new Error('Deletion failed'); // Throw an error to break the chain
                 }
             })
-            .catch(error => console.error('Error deleting prompt:', error));
+            .then(response => response.json()) // Handle the UMAP data fetch response
+            .then(data => {
+                console.log("Data fetched successfully:", data);
+                renderUMAPVisualization(data); // Call the render function with new data
+            })
+            .catch(error => {
+                console.error('Error:', error); // This will catch any errors from the entire chain
+            });
         });
 
         // Append the textarea, image gallery, and delete button to the container
