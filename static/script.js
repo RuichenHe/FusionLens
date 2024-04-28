@@ -124,12 +124,14 @@ function renderUMAPVisualization(data) {
                         img.classList.add('image');
                         imageGallery.appendChild(img);
                     });
+                    imageGallery.style.display = 'flex'; // Start hidden
                     container.setAttribute('data-prompt-id', data.prompt_id);
                     const promptIdDisplay = document.createElement('div');
                     promptIdDisplay.className = 'prompt-id-display'; // Optional: for styling
                     promptIdDisplay.textContent = `Prompt ID: ${data.prompt_id}`;
                     container.appendChild(promptIdDisplay);
                     promptInput.readOnly = true; // Make the textarea unmodifiable
+                    promptInput.disabled = true;
                 });
                 fetchPromises.push(fetchPromise);
             } else {
@@ -176,6 +178,7 @@ function renderUMAPVisualization(data) {
         // Create a new image gallery div
         const newImageGallery = document.createElement('div');
         newImageGallery.classList.add('imageGallery');
+        newImageGallery.style.display = 'none'; // Start hidden
 
         // Create a new t-SNE plot div
         const newTsnePlot = document.createElement('div');

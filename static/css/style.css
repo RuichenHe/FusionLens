@@ -12,32 +12,49 @@ body {
     margin-top: 5px;
 }
 
-.promptInput {
+textarea.promptInput {
     width: 300px;
     height: 50px;
     margin-right: 20px;
+    border: 1px solid #ccc;
+    padding: 10px;
+    background-color: #fff;
+    color: #000;
+    border-radius: 8px;
+}
+
+textarea.promptInput:disabled {
+    background-color: #e0e0e0;
+    color: #6c757d;
+    font-weight: bold;
+    cursor: not-allowed;
+    border-radius: 8px;
 }
 
 .imageGallery {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    padding: 10px; /* Adds padding around the gallery */
+    background-color: #f8f9fa; /* Light background for the gallery */
+    border: 1px solid #dee2e6; /* Subtle border for the gallery */
+    border-radius: 8px; /* Rounded corners for the gallery */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Soft shadow around the gallery */
 }
 
 .image {
     width: 100px;
     height: 100px;
     object-fit: cover;
+    border-radius: 8px; /* Rounded corners for each image */
+    border: 1px solid #dee2e6; /* Subtle border for each image */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Soft shadow for each image */
+    transition: transform 0.3s ease; /* Smooth transform effect on hover */
 }
 
-#generateButton {
-    flex-shrink: 0; /* Prevents the button from shrinking */
-    flex-grow: 0;   /* Prevents the button from growing */
-    margin-right: 10px;
-}
-
-#addRegionButton {
-    margin-top: 5px;
+.image:hover {
+    transform: scale(1.5); /* Slightly enlarge images on hover */
+    cursor: pointer; /* Change cursor to pointer to indicate interactivity */
 }
 
 .left-side {
@@ -60,11 +77,68 @@ body {
 }
 
 .prompt-id-display {
-    padding: 5px;
+    padding: 10px 20px; /* Adjust padding for better spacing */
     margin-top: 5px;
-    font-size: 12px;
-    color: #666;
-    background-color: #f0f0f0;
-    border-radius: 4px;
-    text-align: center;
+    font-size: 14px; /* Slightly larger font size for better readability */
+    color: #666; /* Dark gray color for text */
+    background-color: #f0f0f0; /* Light gray background */
+    border-radius: 6px; /* Slightly larger radius for a smoother curve */
+    text-align: center; /* Ensures text is centered horizontally */
+    display: flex; /* Enables the use of Flexbox for alignment */
+    align-items: center; /* Centers text vertically */
+    justify-content: center; /* Centers text horizontally */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Subtle shadow for depth */
+    border: 1px solid #ddd; /* Subtle border for definition */
+}
+
+#generateButton, #addRegionButton {
+    flex-shrink: 0;
+    flex-grow: 0;
+    margin-right: 10px;
+    margin-top: 5px;
+    height: 5vh;
+    padding: 0.5em 1em;
+    border: none;
+    background-color: #007BFF;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#generateButton:hover, #addRegionButton:hover {
+    background-color: #0056b3;
+}
+
+#generateButton:active {
+    transform: scale(0.95); /* Slightly shrink the button when pressed */
+}
+
+#generateButton:disabled, #addRegionButton:disabled {
+    background-color: #cccccc; /* Light grey background for disabled state */
+    color: #666666; /* Dark grey text color to indicate non-activity */
+    cursor: default; /* Resets cursor to default to avoid indicating clickable */
+    border: 1px solid #cccccc; /* Optional: adds a border to match background */
+}
+
+.deleteButton {
+    padding: 8px 24px; /* Increased horizontal padding */
+    background-color: #dc3545; /* Red color for danger actions */
+    color: white; /* White text for contrast */
+    border: none; /* No border */
+    border-radius: 5px; /* Rounded corners */
+    cursor: pointer; /* Cursor indicates button */
+    transition: background-color 0.3s, transform 0.2s; /* Smooth transitions for hover and press effects */
+    outline: none; /* Removes the outline to keep the design clean */
+    font-weight: bold; /* Bold text to make the button text stand out */
+}
+
+.deleteButton:hover {
+    background-color: #c82333; /* A slightly darker red for hover */
+    transform: scale(1.05); /* Slightly enlarge the button when hovered */
+}
+
+.deleteButton:active {
+    background-color: #bd2130; /* Even darker red for the active state (button press) */
+    transform: scale(0.95); /* Slightly shrink the button when pressed */
 }
