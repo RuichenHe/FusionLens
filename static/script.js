@@ -103,6 +103,11 @@ function renderUMAPVisualization(data) {
 }
 
     document.getElementById('generateButton').addEventListener('click', function() {
+        document.getElementById('generateButton').disabled = true;
+        const loader = document.createElement('div');
+        loader.className = 'loader';
+        document.body.appendChild(loader);  // Add loader to the body or a specific container
+
         // Gather all fetch promises for processing prompts
         let fetchPromises = [];
     
@@ -129,11 +134,11 @@ function renderUMAPVisualization(data) {
                         const img = document.createElement('img');
                         img.src = imageSrc;
                         img.classList.add('image');
+                        img.style.opacity = 0; // Start with opacity 0
                         imageGallery.appendChild(img);
+                        setTimeout(() => { img.style.opacity = 1; }, 50); // Fade in effect
                     });
                     imageGallery.style.display = 'flex'; // Start hidden
-                    console.log(imageGallery.scrollLeft);
-                    console.log(imageGallery.scrollWidth);
                     setTimeout(() => {
                         container.querySelector('.imageGallery').scrollLeft = container.querySelector('.imageGallery').scrollWidth;
                     }, 100); // Adjust the timeout as minimally needed
@@ -168,6 +173,9 @@ function renderUMAPVisualization(data) {
               updateGenerateButtonState();
               updateAddButtonState();
           });
+        })
+        .finally(() => {
+            document.getElementById('generateButton').disabled = false;  // Re-enable the button after all operations
         });
         
       });
