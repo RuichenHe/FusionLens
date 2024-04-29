@@ -142,3 +142,12 @@ textarea.promptInput:disabled {
     background-color: #bd2130; /* Even darker red for the active state (button press) */
     transform: scale(0.95); /* Slightly shrink the button when pressed */
 }
+
+#startTour {
+    cursor: pointer;
+    color: blue; /* Make the text blue to look more like a link */
+}
+
+#startTour:hover {
+    text-decoration: underline; /* Underline on hover to emphasize interactivity */
+}

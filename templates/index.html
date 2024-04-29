@@ -7,7 +7,7 @@
 </head>
 <body>
     <div class="left-side">
-      <p>Stable Diffusion Visualizer</p>
+      <p id="startTour">Stable Diffusion Visualizer</p>
       <button id="generateButton" disabled>Generate Images</button>
       <button id="addRegionButton" data-intro="Click this button to add a new prompt.">Add Prompt</button>
       <div class="container">
@@ -21,6 +21,14 @@
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/intro.min.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var startTourElement = document.getElementById('startTour');
+        startTourElement.addEventListener('click', function() {
+            introJs().start();
+        });
+    });
+    </script>
 </body>
 </html>
 
