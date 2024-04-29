@@ -152,3 +152,9 @@ textarea.promptInput:disabled {
 #startTour:hover {
     text-decoration: underline; /* Underline on hover to emphasize interactivity */
 }
+
+#umapVisualization {
+    width: 100%;  /* Use the full width of the parent container */
+    height: 100%; /* Use the full height of the parent container */
+    /* Additional styles as needed */
+}
