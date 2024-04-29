@@ -6,17 +6,17 @@
     <link href="https://cdn.jsdelivr.net/npm/intro.js@7.2.0/minified/introjs.min.css" rel="stylesheet">
 </head>
 <body>
-    <div class="left-side">
+    <div class="left-side" data-step="3" data-intro="Once finished, the images will be displayed here.">
       <p id="startTour">Stable Diffusion Visualizer</p>
-      <button id="generateButton" disabled data-intro="After you have a prompt, click this button to create your image.">Generate Images</button>
-      <button id="addRegionButton" data-intro="Click this button to add a new prompt.">Add Prompt</button>
-      <div class="container" data-intro="All your prompts and generated images are displayed here.">
+      <button id="generateButton" data-step="2" disabled data-intro="After you have a prompt, click this button to create your image.">Generate Images</button>
+      <button id="addRegionButton" data-step="1" data-intro="Click this button to add a new prompt.">Add Prompt</button>
+      <div class="container">
           <div class="promptInput" style="display: none;"></div>
           <div class="imageGallery" style="display: none;"></div>
       </div>
     </div>
     <div class="right-side" id="tsneVisualization">
-      <div id="umapVisualization" data-intro="You can find the UMAP trajectory here. Click the prompt ID to choose which prompts you want to include here."></div>
+      <div id="umapVisualization" data-step="4" data-intro="You can find the UMAP trajectory here. Click the prompt ID to choose which prompts you want to include here."></div>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js" defer></script>
