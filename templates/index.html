@@ -8,15 +8,15 @@
 <body>
     <div class="left-side">
       <p id="startTour">Stable Diffusion Visualizer</p>
-      <button id="generateButton" disabled>Generate Images</button>
+      <button id="generateButton" disabled data-intro="After you have a prompt, click this button to create your image.">Generate Images</button>
       <button id="addRegionButton" data-intro="Click this button to add a new prompt.">Add Prompt</button>
-      <div class="container">
+      <div class="container" data-intro="All your prompts and generated images are displayed here.">
           <div class="promptInput" style="display: none;"></div>
           <div class="imageGallery" style="display: none;"></div>
       </div>
     </div>
     <div class="right-side" id="tsneVisualization">
-      <div id="umapVisualization"></div>
+      <div id="umapVisualization" data-intro="You can find the UMAP trajectory here. Click the prompt ID to choose which prompts you want to include here."></div>
     </div>
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js" defer></script>
