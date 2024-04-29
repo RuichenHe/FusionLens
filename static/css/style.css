@@ -35,7 +35,10 @@ textarea.promptInput:disabled {
     display: flex;
     flex-wrap: nowrap; /* Prevents wrapping of items */
     gap: 10px;
-    padding: 10px; /* Adds padding around the gallery */
+    padding-top: 30px;    /* Top padding */
+    padding-right: 10px;  /* Right padding (optional change) */
+    padding-bottom: 30px; /* Bottom padding */
+    padding-left: 10px;   /* Left padding (optional change) */
     background-color: #f8f9fa; /* Light background for the gallery */
     border: 1px solid #dee2e6; /* Subtle border for the gallery */
     border-radius: 8px; /* Rounded corners for the gallery */
