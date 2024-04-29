@@ -3,12 +3,13 @@
 <head>
     <title>Image Gallery</title>
     <link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/style.css')}}">
+    <link href="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.css" rel="stylesheet">
 </head>
 <body>
     <div class="left-side">
       <p>Stable Diffusion Visualizer</p>
       <button id="generateButton" disabled>Generate Images</button>
-      <button id="addRegionButton">Add Prompt</button>
+      <button id="addRegionButton" data-intro="Click this button to add a new prompt.">Add Prompt</button>
       <div class="container">
           <div class="promptInput" style="display: none;"></div>
           <div class="imageGallery" style="display: none;"></div>
@@ -19,6 +20,7 @@
     </div>
     <script src="{{ url_for('static', filename='script.js') }}" defer></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/intro.js/minified/introjs.min.js"></script>
 </body>
 </html>
 
