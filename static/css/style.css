@@ -158,12 +158,25 @@ textarea.promptInput:disabled {
     /* Additional styles as needed */
 }
 
+.loader-overlay {
+    position: fixed;  /* Overlay covering the whole screen */
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent black background */
+    display: flex;
+    justify-content: center;  /* Center loader horizontally */
+    align-items: center;  /* Center loader vertically */
+    z-index: 1000;  /* High z-index to keep it above other content */
+}
+
 .loader {
-    border: 6px solid #f3f3f3;
+    border: 8px solid #f3f3f3; /* Light grey */
+    border-top: 8px solid #3498db; /* Blue */
     border-radius: 50%;
-    border-top: 6px solid #3498db;
-    width: 40px;
-    height: 40px;
+    width: 80px;  /* Larger width */
+    height: 80px;  /* Larger height */
     animation: spin 2s linear infinite;
 }
 

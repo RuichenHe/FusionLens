@@ -104,9 +104,14 @@ function renderUMAPVisualization(data) {
 
     document.getElementById('generateButton').addEventListener('click', function() {
         document.getElementById('generateButton').disabled = true;
+
+        const overlay = document.createElement('div');
+        overlay.className = 'loader-overlay';
         const loader = document.createElement('div');
         loader.className = 'loader';
-        document.body.appendChild(loader);  // Add loader to the body or a specific container
+        overlay.appendChild(loader);
+        document.body.appendChild(overlay);  // Add overlay to the body
+
 
         // Gather all fetch promises for processing prompts
         let fetchPromises = [];
@@ -176,6 +181,7 @@ function renderUMAPVisualization(data) {
         })
         .finally(() => {
             document.getElementById('generateButton').disabled = false;  // Re-enable the button after all operations
+            document.body.removeChild(overlay); // Remove overlay when finished
         });
         
       });
