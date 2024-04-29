@@ -155,6 +155,5 @@ textarea.promptInput:disabled {
 
 #umapVisualization {
     width: 100%;  /* Use the full width of the parent container */
-    height: 100%; /* Use the full height of the parent container */
     /* Additional styles as needed */
 }
