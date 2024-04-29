@@ -33,13 +33,15 @@ textarea.promptInput:disabled {
 
 .imageGallery {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Prevents wrapping of items */
     gap: 10px;
     padding: 10px; /* Adds padding around the gallery */
     background-color: #f8f9fa; /* Light background for the gallery */
     border: 1px solid #dee2e6; /* Subtle border for the gallery */
     border-radius: 8px; /* Rounded corners for the gallery */
     box-shadow: 0 4px 6px rgba(0,0,0,0.1); /* Soft shadow around the gallery */
+    overflow-x: auto; /* Enables horizontal scrolling */
+    white-space: nowrap; /* Keeps items in a single line */
 }
 
 .image {
@@ -78,7 +80,6 @@ textarea.promptInput:disabled {
 
 .prompt-id-display {
     padding: 10px 20px; /* Adjust padding for better spacing */
-    margin-top: 5px;
     font-size: 14px; /* Slightly larger font size for better readability */
     color: #666; /* Dark gray color for text */
     background-color: #f0f0f0; /* Light gray background */

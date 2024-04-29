@@ -19,7 +19,6 @@ function renderUMAPVisualization(data) {
         visualizationContainer.style.display = 'block';
         visualizationContainer.innerHTML = '';
 
-        // Color mapping by prompt_id
         const promptColors = {};
         const colorPalette = Plotly.d3.scale.category10();
         data.forEach(d => {
@@ -28,7 +27,6 @@ function renderUMAPVisualization(data) {
             }
         });
 
-        // Group data by prompt_id
         const groupedData = data.reduce((acc, d) => {
             if (!acc[d.prompt_id]) acc[d.prompt_id] = [];
             acc[d.prompt_id].push(d);
@@ -37,7 +35,15 @@ function renderUMAPVisualization(data) {
 
         const uniqueSteps = [...new Set(data.map(d => d.step))].sort((a, b) => a - b);
 
-        // Generate traces for each prompt_id with initial emphasis on none
+        // Determine the range for the axes
+        let allX = [], allY = [];
+        data.forEach(d => {
+            allX.push(d.x);
+            allY.push(d.y);
+        });
+        const xRange = [Math.min(...allX), Math.max(...allX)];
+        const yRange = [Math.min(...allY), Math.max(...allY)];
+
         const traces = Object.keys(groupedData).map(prompt_id => ({
             x: groupedData[prompt_id].map(d => d.x),
             y: groupedData[prompt_id].map(d => d.y),
@@ -47,25 +53,26 @@ function renderUMAPVisualization(data) {
             marker: {
                 size: 5,
                 color: promptColors[prompt_id],
-                opacity: 0.3
+                opacity: 0.8
             }
         }));
 
-        // Create frames that adjust the marker properties for emphasis dynamically
         const frames = uniqueSteps.map(step => ({
             name: step.toString(),
             data: Object.keys(groupedData).map(prompt_id => ({
+                x: groupedData[prompt_id].filter(d => d.step <= step).map(d => d.x),
+                y: groupedData[prompt_id].filter(d => d.step <= step).map(d => d.y),
                 marker: {
                     size: groupedData[prompt_id].map(d => d.step === step ? 10 : 5),
-                    opacity: groupedData[prompt_id].map(d => d.step === step ? 1.0 : 0.3)
+                    opacity: groupedData[prompt_id].map(d => d.step === step ? 1.0 : 0.8)
                 }
             }))
         }));
 
         const layout = {
             title: 'UMAP Visualization Animated Over Steps',
-            xaxis: { title: 'UMAP Dimension 1' },
-            yaxis: { title: 'UMAP Dimension 2' },
+            xaxis: { title: 'UMAP Dimension 1', range: xRange },
+            yaxis: { title: 'UMAP Dimension 2', range: yRange },
             showlegend: true,
             updatemenus: [{
                 type: 'buttons',
@@ -75,8 +82,8 @@ function renderUMAPVisualization(data) {
                     method: 'animate',
                     args: [null, {
                         fromcurrent: true,
-                        transition: { duration: 500 },
-                        frame: { duration: 500, redraw: true }
+                        transition: { duration: 100 },
+                        frame: { duration: 100, redraw: true }
                     }],
                 }, {
                     label: 'Pause',
@@ -125,6 +132,13 @@ function renderUMAPVisualization(data) {
                         imageGallery.appendChild(img);
                     });
                     imageGallery.style.display = 'flex'; // Start hidden
+                    console.log(imageGallery.scrollLeft);
+                    console.log(imageGallery.scrollWidth);
+                    setTimeout(() => {
+                        container.querySelector('.imageGallery').scrollLeft = container.querySelector('.imageGallery').scrollWidth;
+                    }, 100); // Adjust the timeout as minimally needed
+                    
+                    console.log(container.querySelector('.imageGallery').scrollLeft);
                     container.setAttribute('data-prompt-id', data.prompt_id);
                     const promptIdDisplay = document.createElement('div');
                     promptIdDisplay.className = 'prompt-id-display'; // Optional: for styling
