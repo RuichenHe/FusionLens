@@ -192,3 +192,21 @@ textarea.promptInput:disabled {
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
 }
+
+.vertical-container {
+    display: flex;
+    flex-direction: column; 
+    justify-content: space-between;
+    align-items: stretch;
+    height: 100%; 
+}
+
+.prompt-id-display, .similarity-display {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 8px;
+    border: 1px solid #dee2e6;
+    margin: 2px;
+}

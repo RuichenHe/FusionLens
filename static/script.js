@@ -150,10 +150,27 @@ function renderUMAPVisualization(data) {
                     
                     console.log(container.querySelector('.imageGallery').scrollLeft);
                     container.setAttribute('data-prompt-id', data.prompt_id);
+                    
                     const promptIdDisplay = document.createElement('div');
-                    promptIdDisplay.className = 'prompt-id-display'; // Optional: for styling
+                    promptIdDisplay.className = 'prompt-id-display';
                     promptIdDisplay.textContent = `Prompt ID: ${data.prompt_id}`;
-                    container.appendChild(promptIdDisplay);
+                    
+                    // New vertical container
+                    const verticalContainer = document.createElement('div');
+                    verticalContainer.className = 'vertical-container'; // Add a class for potential styling
+                    
+                    // Create the similarity score element
+                    const similarityDisplay = document.createElement('div');
+                    similarityDisplay.className = 'similarity-display';
+                    similarityDisplay.textContent = `Similarity: ${data.sim.toFixed(2)}`;
+                    
+                    // Append both elements to the vertical container
+                    verticalContainer.appendChild(promptIdDisplay);
+                    verticalContainer.appendChild(similarityDisplay);
+                    
+                    // Finally, append the vertical container to the main horizontal container
+                    container.appendChild(verticalContainer);
+
                     promptInput.readOnly = true; // Make the textarea unmodifiable
                     promptInput.disabled = true;
                 });
